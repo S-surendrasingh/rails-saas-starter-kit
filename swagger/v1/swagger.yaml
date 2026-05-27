@@ -4,6 +4,12 @@ info:
   title: Rails SaaS Starter Kit API
   version: v1
   description: API documentation for Rails SaaS Starter Kit
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 paths:
   "/api/v1/signup":
     post:
@@ -55,6 +61,16 @@ paths:
               required:
               - email
               - password
+  "/api/v1/profile":
+    get:
+      summary: Get current user profile
+      tags:
+      - Profile
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Profile fetched successfully
 servers:
 - url: http://localhost:3000
   description: Local development server

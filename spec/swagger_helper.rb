@@ -13,6 +13,15 @@ RSpec.configure do |config|
         version: 'v1',
         description: 'API documentation for Rails SaaS Starter Kit'
       },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: :http,
+            scheme: :bearer,
+            bearerFormat: :JWT
+          }
+        }
+      },
       paths: {},
       servers: [
         {
