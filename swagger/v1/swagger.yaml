@@ -1,0 +1,60 @@
+---
+openapi: 3.0.1
+info:
+  title: Rails SaaS Starter Kit API
+  version: v1
+  description: API documentation for Rails SaaS Starter Kit
+paths:
+  "/api/v1/signup":
+    post:
+      summary: Signup user
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '201':
+          description: Signup successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+              required:
+              - name
+              - email
+              - password
+              - password_confirmation
+  "/api/v1/login":
+    post:
+      summary: Login user
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: Login successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password
+servers:
+- url: http://localhost:3000
+  description: Local development server
