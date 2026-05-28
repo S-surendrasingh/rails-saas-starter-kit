@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
       get "profile", to: "profile#show"
 
-      resources :posts
+      resources :posts do
+        resources :comments, only: %i[ index create destroy ]
+      end
     end
   end
 end

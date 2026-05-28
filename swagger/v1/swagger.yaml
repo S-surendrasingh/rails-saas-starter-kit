@@ -61,6 +61,40 @@ paths:
               required:
               - email
               - password
+  "/api/v1/posts/{post_id}/comments":
+    parameters:
+    - name: post_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: List comments
+      tags:
+      - Comments
+      responses:
+        '200':
+          description: Comments fetched successfully
+    post:
+      summary: Create comment
+      tags:
+      - Comments
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: Comment created successfully
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+              required:
+              - body
   "/api/v1/posts":
     get:
       summary: Fetch posts
@@ -69,7 +103,7 @@ paths:
       security:
       - bearerAuth: []
       parameters:
-      - name: page
+      - name: page_number
         in: query
         schema:
           type: integer
