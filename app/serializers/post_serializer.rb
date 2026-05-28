@@ -9,6 +9,8 @@ class PostSerializer
       title: @post.title,
       content: @post.content,
       status: @post.status,
+      likes_count: @post.likes_count,
+      comments_count: @post.comments.count,
       created_at: @post.created_at,
       author: {
         id: @post.user.id,

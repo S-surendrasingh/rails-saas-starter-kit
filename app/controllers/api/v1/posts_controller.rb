@@ -1,18 +1,25 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authorize_request
   before_action :find_post, only: [ :show, :update, :destroy ]
+  before_action :authorize_owner!, only: [ :update, :destroy ]
 
   def index
-    posts = Post.includes(:user)
-                .order(created_at: :desc)
+    posts = Post.includes(:user, :comments, :likes)
+                .recent
 
     posts = posts.where(status: params[:status]) if params[:status].present?
 
     if params[:search].present?
-      posts = posts.where("title ILIKE ?", "%#{params[:search]}%")
+      posts = posts.where(
+        "title ILIKE :search OR content ILIKE :search",
+        search: "%#{params[:search]}%"
+      )
     end
 
-    pagy, records = pagy(posts, limit: 10)
+    limit = params[:limit].to_i
+    limit = 10 if limit <= 0 || limit > 50
+
+    pagy, records = pagy(posts, limit: limit)
 
     success_response(
       message: "Posts fetched successfully",
@@ -52,13 +59,6 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def update
-    unless owns_post?(@post)
-      return error_response(
-        message: "Forbidden access",
-        status: :forbidden
-      )
-    end
-
     if @post.update(post_params)
       success_response(
         message: "Post updated successfully",
@@ -75,13 +75,6 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def destroy
-    unless owns_post?(@post)
-      return error_response(
-        message: "Forbidden access",
-        status: :forbidden
-      )
-    end
-
     @post.destroy
 
     success_response(
@@ -99,6 +92,15 @@ class Api::V1::PostsController < ApplicationController
     error_response(
       message: "Post not found",
       status: :not_found
+    )
+  end
+
+  def authorize_owner!
+    return if owns_post?(@post)
+
+    error_response(
+      message: "Forbidden access",
+      status: :forbidden
     )
   end
 
