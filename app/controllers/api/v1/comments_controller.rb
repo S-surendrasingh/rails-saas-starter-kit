@@ -1,7 +1,7 @@
 class Api::V1::CommentsController < ApplicationController
   before_action :authorize_request
   before_action :set_post
-  before_action :set_comment, only: [:destroy]
+  before_action :set_comment, only: [ :destroy ]
 
   def index
     comments = @post.comments.includes(:user)
@@ -11,7 +11,7 @@ class Api::V1::CommentsController < ApplicationController
       comments: comments.as_json(
         include: {
           user: {
-            only: [:id, :name, :email]
+            only: [ :id, :name, :email ]
           }
         }
       )

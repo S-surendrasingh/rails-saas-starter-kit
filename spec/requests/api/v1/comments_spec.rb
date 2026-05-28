@@ -61,7 +61,7 @@ RSpec.describe 'Comments API', type: :request do
         properties: {
           body: { type: :string }
         },
-        required: ['body']
+        required: [ 'body' ]
       }
 
       response '201', 'Comment created successfully' do
