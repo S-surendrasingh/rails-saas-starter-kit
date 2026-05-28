@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       post "login", to: "auth#login"
 
       get "profile", to: "profile#show"
-      
+
       resources :posts
     end
   end
