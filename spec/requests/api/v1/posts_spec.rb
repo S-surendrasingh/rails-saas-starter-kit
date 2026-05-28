@@ -9,7 +9,7 @@ RSpec.describe 'Posts API', type: :request do
 
       produces 'application/json'
 
-      parameter name: :page, in: :query, type: :integer
+      parameter name: :page_number, in: :query, type: :integer
       parameter name: :status, in: :query, type: :string
       parameter name: :search, in: :query, type: :string
 
@@ -27,6 +27,10 @@ RSpec.describe 'Posts API', type: :request do
           "Bearer #{JsonWebToken.encode(user_id: user.id)}"
         end
 
+        let(:page_number) { 1 }
+        let(:status) { nil }
+        let(:search) { nil }
+
         run_test!
       end
     end
@@ -39,7 +43,7 @@ RSpec.describe 'Posts API', type: :request do
       consumes 'application/json'
       produces 'application/json'
 
-      parameter name: :post, in: :body, schema: {
+      parameter name: :post_params, in: :body, schema: {
         type: :object,
         properties: {
           title: { type: :string },
@@ -63,7 +67,7 @@ RSpec.describe 'Posts API', type: :request do
           "Bearer #{JsonWebToken.encode(user_id: user.id)}"
         end
 
-        let(:post) do
+        let(:post_params) do
           {
             title: 'My First Post',
             content: 'This is my first post',
