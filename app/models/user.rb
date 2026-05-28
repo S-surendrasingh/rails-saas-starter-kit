@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :posts, dependent: :destroy
+  
   enum :role, { user: 0, admin: 1 }, default: :user
 
   before_validation :normalize_email

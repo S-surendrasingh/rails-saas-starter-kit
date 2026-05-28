@@ -61,6 +61,54 @@ paths:
               required:
               - email
               - password
+  "/api/v1/posts":
+    get:
+      summary: Fetch posts
+      tags:
+      - Posts
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: search
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Posts fetched successfully
+    post:
+      summary: Create post
+      tags:
+      - Posts
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: Post created successfully
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+                status:
+                  type: string
+              required:
+              - title
+              - content
   "/api/v1/profile":
     get:
       summary: Get current user profile
