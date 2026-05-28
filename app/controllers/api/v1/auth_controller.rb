@@ -5,13 +5,19 @@ class Api::V1::AuthController < ApplicationController
     if user.save
       token = JsonWebToken.encode(user_id: user.id)
 
-      render json: {
+      success_response(
         message: "Signup successful",
-        token: token,
-        user: user_response(user)
-      }, status: :created
+        data: {
+          token: token,
+          user: UserSerializer.new(user).as_json
+        },
+        status: :created
+      )
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      error_response(
+        message: "Signup failed",
+        errors: user.errors.full_messages
+      )
     end
   end
 
@@ -21,13 +27,18 @@ class Api::V1::AuthController < ApplicationController
     if user&.authenticate(params[:password])
       token = JsonWebToken.encode(user_id: user.id)
 
-      render json: {
+      success_response(
         message: "Login successful",
-        token: token,
-        user: user_response(user)
-      }, status: :ok
+        data: {
+          token: token,
+          user: UserSerializer.new(user).as_json
+        }
+      )
     else
-      render json: { error: "Invalid email or password" }, status: :unauthorized
+      error_response(
+        message: "Invalid email or password",
+        status: :unauthorized
+      )
     end
   end
 
@@ -35,14 +46,5 @@ class Api::V1::AuthController < ApplicationController
 
   def user_params
     params.permit(:name, :email, :password, :password_confirmation)
-  end
-
-  def user_response(user)
-    {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    }
   end
 end
