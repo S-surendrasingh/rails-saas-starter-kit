@@ -2,13 +2,11 @@ class Api::V1::ProfileController < ApplicationController
   before_action :authorize_request
 
   def show
-    render json: {
-      user: {
-        id: current_user.id,
-        name: current_user.name,
-        email: current_user.email,
-        role: current_user.role
+    success_response(
+      message: "Profile fetched successfully",
+      data: {
+        user: UserSerializer.new(current_user).as_json
       }
-    }, status: :ok
+    )
   end
 end
