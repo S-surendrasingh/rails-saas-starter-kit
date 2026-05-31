@@ -27,6 +27,6 @@ module RailsSaasStarterKit
 
     # Enable sessions for Sidekiq Web UI
     config.middleware.use ActionDispatch::Session::CookieStore,
-      key: '_rails_saas_starter_kit_session'
+      key: "_rails_saas_starter_kit_session"
   end
 end
