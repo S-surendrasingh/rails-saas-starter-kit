@@ -40,20 +40,23 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
-    post = current_user.posts.new(post_params)
+    result = Posts::CreateService.new(
+      user: current_user,
+      params: post_params
+    ).call
 
-    if post.save
+    if result.is_a?(Post)
       success_response(
         message: "Post created successfully",
         data: {
-          post: PostSerializer.new(post).as_json
+          post: PostSerializer.new(result).as_json
         },
         status: :created
       )
     else
       error_response(
         message: "Post creation failed",
-        errors: post.errors.full_messages
+        errors: result.errors
       )
     end
   end
