@@ -10,9 +10,9 @@ module Posts
 
       ActiveRecord::Base.transaction do
         post.save!
-
-        enqueue_notification(post) if post.published?
       end
+
+      enqueue_notification(post) if post.published?
 
       post
     rescue ActiveRecord::RecordInvalid => e
