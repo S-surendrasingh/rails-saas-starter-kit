@@ -10,8 +10,4 @@ class Post < ApplicationRecord
   validates :content, presence: true
 
   scope :recent, -> { order(created_at: :desc) }
-
-  def likes_count
-    likes.count
-  end
 end
