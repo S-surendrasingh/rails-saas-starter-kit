@@ -15,7 +15,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_28_101719) do
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
-    t.text "body"
+    t.text "body", null: false
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
     t.datetime "created_at", null: false
@@ -35,9 +35,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_28_101719) do
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string "title"
-    t.text "content"
-    t.integer "status"
+    t.string "title", null: false
+    t.text "content", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -45,9 +47,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_28_101719) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "password_digest"
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
